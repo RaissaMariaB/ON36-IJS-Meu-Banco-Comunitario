@@ -1,14 +1,37 @@
-export enum AccountType {
-  SAVING_ACCOUNT = 'SAVING_ACCOUNT',
-  CURRENT_CURRENT = 'CURRENT_CURRENT',
-}
+import { Client } from 'src/client/client.model';
+import { AccountType } from './accounts.types';
 
 export class Account {
-  constructor(
-    public accountId: number,
-    public balance: number,
-    public createdAt: Date,
-    public clientId: number,
-    public accountType: AccountType,
-  ) {}
+  accountId: string;
+  accountType: AccountType;
+  createdAt: Date;
+  balance: number;
+  client: Client;
+  limit?: number;
+
+  constructor(accountType, balance, createdAt, client, limit?) {
+    this.accountId = uuid();
+    this.accountType = accountType;
+    this.balance = balance;
+    this.createdAt = createdAt;
+    this.client = client;
+    this.limit = limit;
+  }
+
+  getBalance(): number {
+    return this.balance;
+  }
+
+  deposit(value: number): void {
+    this.balance += value;
+  }
+
+  withdraw(value: number): void {
+    if (value <= this.balance) {
+      this.balance -= value;
+      return;
+    }
+
+    throw new Error('Saldo insuficiente');
+  }
 }

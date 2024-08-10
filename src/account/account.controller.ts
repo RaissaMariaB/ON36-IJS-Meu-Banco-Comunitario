@@ -1,6 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { AccountService } from './account.service';
-import { AccountType } from './account.model';
+import { AccountType } from './accounts.types';
+import { Client } from 'src/client/client.model';
 
 @Controller('account')
 export class AccountController {
@@ -8,7 +9,7 @@ export class AccountController {
 
   @Post() addAccount(
     accountId: number,
-    clientId: number,
+    clientId: Client,
     balance: number,
     createdAt: Date,
     accountType: AccountType,

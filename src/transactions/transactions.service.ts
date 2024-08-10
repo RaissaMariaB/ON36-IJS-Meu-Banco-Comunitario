@@ -43,7 +43,6 @@ export class TransactionsService {
     }
 
     const newTransaction = new Transactions(
-      this.idCounter++,
       accountId,
       amount,
       type,
@@ -65,19 +64,5 @@ export class TransactionsService {
 
   findAll(): Transactions[] {
     return this.readTransactions();
-  }
-
-  removeTransaction(id: number): void {
-    const listOfTransactions = this.readTransactions();
-    const index = listOfTransactions.findIndex(
-      (transaction) => transaction.id === id,
-    );
-
-    if (index < 0) {
-      throw new NotFoundException('Transaction not found');
-    }
-
-    listOfTransactions.splice(index, 1);
-    this.writeTransactions(listOfTransactions);
   }
 }
