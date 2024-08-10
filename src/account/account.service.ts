@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Account, AccountType } from './account.model';
+import { Account } from './account.model';
+import { AccountType } from './accounts.types';
 import * as path from 'path';
 import * as fs from 'fs';
+import { Client } from 'src/client/client.model';
+
 
 @Injectable()
 export class AccountService {
@@ -20,7 +23,7 @@ export class AccountService {
 
   createAccount(
     accountId: number,
-    clientId: number,
+    client: Client,
     balance: number,
     createdAt: Date,
     accountType: AccountType,
@@ -29,23 +32,20 @@ export class AccountService {
 
     const newAccount = {
       accountId,
-      clientId,
+      client,
       balance,
       createdAt,
       accountType,
-      accountNumber:
-        accounts.length > 0 ? accounts[accounts.length - 1].accountId + 1 : 1,
     };
     accounts.push(newAccount);
     this.writeAccouts(accounts);
     return newAccount;
-  }
+  };
 
-  findById(id: number): Account {
+
+  findById(id: string): Account {
     const accounts = this.readAccounts();
-    const account = accounts.find(
-      (account) => account.accountId === Number(id),
-    );
+    const account = accounts.find((account) => account.id === id);
 
     if (!account) {
       console.log(`Account with id ${id} not found`);
@@ -53,11 +53,9 @@ export class AccountService {
     return account;
   }
 
-  updateBalance(id: number, newBalance: number): Account {
+  updateBalance(id: string, newBalance: number): Account {
     const accounts = this.readAccounts();
-    const account = accounts.find(
-      (account) => account.accountId === Number(id),
-    );
+    const account = accounts.find((account) => account.id === id);
     account.balance = newBalance;
 
     this.writeAccouts(accounts);
@@ -65,11 +63,9 @@ export class AccountService {
     return account;
   }
 
-  removeBalance(id: number): void {
+  removeBalance(id: string): void {
     const accounts = this.readAccounts();
-    const accountIndex = accounts.findIndex(
-      (account) => account.accountId === Number(id),
-    );
+    const accountIndex = accounts.findIndex((account) => account.id === id);
     accounts.splice(accountIndex, 1);
     this.writeAccouts(accounts);
   }

@@ -1,6 +1,12 @@
+import { Client } from 'src/client/client.model';
+
 export class Manager {
-  constructor(
-    private managerId: string,
-    private name: string,
-  ) {}
+  id: string;
+  name: string;
+  clients: Client[];
+
+  constructor(name: string) {
+    this.name = name;
+    this.clients = [];
+  }
 }

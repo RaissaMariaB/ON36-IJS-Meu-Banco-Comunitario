@@ -1,38 +1,17 @@
 import { Account } from '../account/account.model';
+import { ClientDto } from './client.dto';
 
-export class Client {
-  constructor(
-    public id: number,
-    public name: string,
-    public account: Account[] = [],
-    public address: string,
-  ) {}
+export class Client implements ClientDto {
+  id?: string;
+  name: string;
+  address: string;
+  account?: Account[];
+  manager?: string;
 
-  get clientAddress() {
-    return this.address;
-  }
-
-  get clientName() {
-    return this.name;
-  }
-
-  get clientAccounts() {
-    return this.account;
-  }
-
-  get clientNumberID() {
-    return this.id;
-  }
-
-  set newName(value: string) {
-    this.name = value;
-  }
-
-  set newAddress(value: string) {
-    this.address = value;
-  }
-
-  addAccount(account: Account) {
-    this.account.push(account);
+  constructor(name: string, address: string) {
+    this.name = name;
+    this.address = address;
+    this.account = [];
+    this.manager = null;
   }
 }
